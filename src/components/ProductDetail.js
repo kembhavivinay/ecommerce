@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from "antd";
 import { useNavigate } from 'react-router-dom';
+import { useProductContext } from '../context';
 
-const ProductDetail = ({handleMenuHighlight}) => {
+const ProductDetail = () => {
+    const {handleMenuHighlight,tableDataSource,handleTableDataSource,selectedRowKey,handleSelectedRow,addSelectedProducts} = useProductContext();
     const navigate = useNavigate();
-    const [tableDataSource, setTableDataSource] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedRowKey, setSelectedRowKey] = useState(localStorage.getItem("selectedRowKey") || '');
     
     const fetchData = async() =>{
         const resp = await fetch('https://dummyjson.com/products');
         const data = await resp.json();
         const {products} =  data;
-        setTableDataSource(
-            products.map((item) =>{
-                return{...item}
-            })
-        );
+        handleTableDataSource(products);
         setLoading(false)
     }
 
@@ -26,11 +22,10 @@ const ProductDetail = ({handleMenuHighlight}) => {
 
 
     const handleProductClick = (record) =>{
-        setSelectedRowKey(record.id);
+        handleSelectedRow(record.id)
         handleMenuHighlight("2");
-        localStorage.setItem("selectedRowKey", record.id);
-        localStorage.setItem("selectedProduct", JSON.stringify(record));
-        navigate("/compare-page",{state:JSON.parse(localStorage.getItem('selectedProduct'))})
+        addSelectedProducts([record]);
+        navigate("/compare-page")
     }
 
     const columns = [
@@ -44,7 +39,7 @@ const ProductDetail = ({handleMenuHighlight}) => {
                 // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 <a 
                     onClick={() => selectedRowKey !== record.id && handleProductClick(record)}
-                    disabled={selectedRowKey === record.id}
+                    disabled={selectedRowKey == record.id}
                 >
                     Compare
                 </a>
@@ -58,7 +53,7 @@ const ProductDetail = ({handleMenuHighlight}) => {
             {loading ? <h4>Loading....</h4> : 
                 <Table 
                     dataSource={tableDataSource} 
-                    rowClassName={(record) => (record.id === selectedRowKey ? 'highlight' : '')}
+                    rowClassName={(record) => (record.id == selectedRowKey ? 'highlight' : '')}
                     columns={columns} 
                     pagination={{ pageSize: 5 }} 
                 />

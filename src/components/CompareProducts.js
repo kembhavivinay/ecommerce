@@ -1,25 +1,24 @@
-import React, {useState } from 'react';
-import {Button,Table,message} from "antd"
+import React from 'react';
+import {Button,Table,message,Select} from "antd"
+import { useProductContext } from '../context';
 
 const CompareProducts = () => {
-    const [selectedProducts,setSelectedProducts] = useState(() =>{
-        if(localStorage.getItem('selectedProduct')){
-            return [JSON.parse(localStorage.getItem('selectedProduct'))];
-        }
-        return [];
-    });
-
+    const { Option } = Select;
+    const {tableDataSource,selectedProducts,updateSelectedProducts,addSelectedProducts} = useProductContext();
     const removeProduct = (id) =>{
-        setSelectedProducts(selectedProducts.filter((p) => p.id !== id));
+        const filteredProducts = selectedProducts.filter((p) => p.id !== id);
+        addSelectedProducts(filteredProducts);
     }
 
-    const addProduct = () =>{
+    const addProduct = (productId) =>{
         if (selectedProducts.length >= 4) {
             message.error("Compare only 4 products");
             return;
         }
-        const newProduct = {"id":2,"title":"Eyeshadow Palette with Mirror","price":100,"brand":"newBrand","rating":"6.6","category":"Shampoo"}
-        setSelectedProducts([...selectedProducts,newProduct]);
+        const product = tableDataSource.find((p) => p.id === productId);
+        if (product && !selectedProducts.some((p) => p.id === productId)) {
+            updateSelectedProducts(product);
+        }
     }
 
     const columns = [
@@ -52,7 +51,15 @@ const CompareProducts = () => {
         <div>
             <h2>Compare Products</h2>
             <Table columns={columns} dataSource={data} pagination={false} bordered />
-            <Button onClick={() => addProduct()}>Add More</Button>
+            {selectedProducts.length > 0 && <div style={{ marginTop: "20px" }}>
+                <Select placeholder="Add a Product" onChange={addProduct} style={{ width: 200 }}>
+                {tableDataSource
+                    .filter((p) => !selectedProducts.some((sp) => sp.id === p.id))
+                    .map((product) => (
+                        <Option key={product.id} value={product.id}>{product.title}</Option>
+                    ))}
+                </Select>
+            </div>}
         </div>
     );
 }
