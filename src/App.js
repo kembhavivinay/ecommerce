@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate} from "react-router-dom";
 import { Layout, Menu } from "antd";
 import ProductDetail from "./components/ProductDetail";
 import CompareProducts from "./components/CompareProducts";
@@ -34,6 +34,7 @@ const App = () => {
               <Routes>
                 <Route path="/product-detail" element={<ProductDetail handleMenuHighlight={handleMenuHighlight}/>} />
                 <Route path="/compare-page" element={<CompareProducts />} />
+                <Route path="/" element={<Navigate to="/product-detail" replace />} />
               </Routes>
             </Content>
           </Layout>
