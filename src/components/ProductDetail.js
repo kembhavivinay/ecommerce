@@ -48,7 +48,7 @@ const ProductDetail = ({handleMenuHighlight}) => {
         localStorage.setItem("selectedRowKey", record.id);
         handleMenuHighlight("2");
         localStorage.setItem("selectedProduct", JSON.stringify(record));
-        navigate("/ecommerce/compare-page",{state:JSON.parse(localStorage.getItem('selectedProduct'))})
+        navigate("/compare-page",{state:JSON.parse(localStorage.getItem('selectedProduct'))})
     }
     if(loading){
         return(
