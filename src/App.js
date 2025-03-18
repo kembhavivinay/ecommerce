@@ -22,19 +22,19 @@ const App = () => {
           <Sider width={240}>
             <Menu selectedKeys={[menuHighlight]} style={{height:"100%"}}>
               <Menu.Item key="1">
-                <Link to={'/product-detail'} onClick={() => setMenuHighlight("1")}>Product Details</Link> 
+                <Link to={'/ecommerce/product-detail'} onClick={() => setMenuHighlight("1")}>Product Details</Link> 
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={'/compare-page'} onClick={() => setMenuHighlight("2")}>Compare Details</Link> 
+                <Link to={'/ecommerce/compare-page'} onClick={() => setMenuHighlight("2")}>Compare Details</Link> 
               </Menu.Item>
             </Menu>
           </Sider>
           <Layout>
             <Content>
               <Routes>
-                <Route path="/product-detail" element={<ProductDetail handleMenuHighlight={handleMenuHighlight}/>} />
-                <Route path="/compare-page" element={<CompareProducts />} />
-                <Route path="/" element={<Navigate to="/product-detail" replace />} />
+                <Route path="/ecommerce/product-detail" element={<ProductDetail handleMenuHighlight={handleMenuHighlight}/>} />
+                <Route path="/ecommerce/compare-page" element={<CompareProducts />} />
+                <Route path="/ecommerce" element={<Navigate to="/ecommerce/product-detail" replace />} />
               </Routes>
             </Content>
           </Layout>
