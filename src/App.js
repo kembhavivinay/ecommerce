@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
+import { Layout, Menu } from "antd";
+import ProductDetail from "./components/ProductDetail";
+import CompareProducts from "./components/CompareProducts";
 
-function App() {
+const { Header, Sider, Content } = Layout;
+
+const App = () => {
+  const [menuHighlight, setMenuHighlight] = useState('1');
+  const handleMenuHighlight = (key) =>{
+    setMenuHighlight(key);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout style={{minHeight:"100vh"}}>
+        <Header style={{display:"flex",justifyContent:"space-between",background:"darkBlue"}}>
+          <div style={{color:"white"}}>My Logo</div>
+          <div style={{color:"white"}}>user login</div>
+        </Header>
+        <Layout>
+          <Sider width={240}>
+            <Menu selectedKeys={[menuHighlight]} style={{height:"100%"}}>
+              <Menu.Item key="1">
+                <Link to={'/product-detail'} onClick={() => setMenuHighlight("1")}>Product Details</Link> 
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Link to={'/compare-page'} onClick={() => setMenuHighlight("2")}>Compare Details</Link> 
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Layout>
+            <Content>
+              <Routes>
+                <Route path="/product-detail" element={<ProductDetail handleMenuHighlight={handleMenuHighlight}/>} />
+                <Route path="/compare-page" element={<CompareProducts />} />
+              </Routes>
+            </Content>
+          </Layout>
+        </Layout>
+      </Layout>
+    </Router>
   );
-}
+};
 
 export default App;
