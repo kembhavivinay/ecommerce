@@ -12,6 +12,7 @@ const CompareProducts = () => {
 
     const addProduct = (productId) =>{
         if (selectedProducts.length >= 4) {
+            console.log("checl",selectedProducts.length)
             message.error("Compare only 4 products");
             return;
         }
