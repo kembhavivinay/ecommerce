@@ -18,7 +18,7 @@ const CompareProducts = () => {
             message.error("Compare only 4 products");
             return;
         }
-        const newProduct = {"id":2,"title":"Eyeshadow Palette with Mirror","price":100,"brand":"newBrand","rating":"6.6"}
+        const newProduct = {"id":2,"title":"Eyeshadow Palette with Mirror","price":100,"brand":"newBrand","rating":"6.6","category":"Shampoo"}
         setSelectedProducts([...selectedProducts,newProduct]);
     }
 
